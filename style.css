@@ -839,6 +839,214 @@ section { scroll-margin-top: 16px; }
 .mp-list button[aria-current="true"] { background: var(--rose-soft); font-weight: 700; color: var(--rose-deep); }
 .mp-list button:focus-visible { outline: 2px solid var(--blue-deep); }
 
+
+/* ---------- Sorpresas diarias ---------- */
+.until { display: block; margin-top: 12px; font-size: 0.78rem; font-weight: 500; color: var(--muted); }
+.surprises { margin-top: 34px; }
+.surprises .section-head { margin-bottom: 18px; }
+.surprises .section-head h2 { font-size: clamp(2rem, 7vw, 2.8rem); }
+.gold-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 0 !important;
+  padding: 6px 14px;
+  font-size: 0.85rem !important;
+  font-weight: 700;
+  color: #9a6a12 !important;
+  background: #fff4d6;
+  border-radius: 99px;
+}
+.gold-count svg { width: 16px; height: 16px; }
+.days { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+@media (min-width: 900px) { .days { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
+.day {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px 6px 10px;
+  font: inherit;
+  text-align: center;
+  color: var(--ink);
+  background: var(--white);
+  border: 2px solid var(--rose-soft);
+  border-radius: 18px;
+  box-shadow: 0 8px 18px var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.day:hover:not(:disabled) { transform: translateY(-3px); }
+.day:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 3px; }
+.d-num { font-weight: 700; font-size: 1.5rem; line-height: 1; color: var(--rose-deep); font-variant-numeric: tabular-nums; }
+.day:nth-child(even) .d-num { color: var(--blue-deep); }
+.d-date { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.d-name { display: flex; align-items: center; min-height: 2.5em; font-size: 0.78rem; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+.d-ico svg { display: block; width: 22px; height: 22px; }
+.d-state { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.day.today { border-color: var(--rose-deep); animation: ring 2s ease-in-out infinite; }
+.day.today .d-state { color: var(--rose-deep); }
+@keyframes ring { 50% { box-shadow: 0 0 0 6px rgba(201, 86, 127, 0.2), 0 8px 18px var(--shadow); } }
+.day.done { border-color: #f0c04a; background: #fffaf0; animation: none; }
+.day.done .d-state { color: #9a6a12; }
+.day.locked { opacity: 0.55; box-shadow: none; cursor: not-allowed; }
+.gold-heart { filter: drop-shadow(0 0 4px rgba(240, 185, 58, 0.9)); }
+
+/* Escenario */
+.stage {
+  --st-fg: var(--ink);
+  --st-bg: linear-gradient(180deg, #fde3ec 0%, #e6f3fc 100%);
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  display: flex;
+  flex-direction: column;
+  color: var(--st-fg);
+  background: var(--st-bg);
+  overflow: hidden;
+}
+.stage[data-tipo="estrella"] { --st-fg: #ffffff; --st-bg: linear-gradient(180deg, #2f2a5a 0%, #574a86 55%, #d98aa8 100%); }
+.stage[data-tipo="globos"] { --st-bg: linear-gradient(180deg, #f9d3e1 0%, #e9eef9 60%, #dbeaf8 100%); }
+.stage[data-tipo="avion"] { --st-bg: linear-gradient(180deg, #8ec3ea 0%, #cfe8f9 55%, #fde3ec 100%); }
+.st-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 4px;
+}
+.st-kicker { margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.85; }
+.st-title { margin: 4px 0 0; font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: clamp(1.9rem, 7vw, 2.8rem); line-height: 1.05; }
+.st-close {
+  flex: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 9px 16px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.88);
+  border: 0;
+  border-radius: 99px;
+  cursor: pointer;
+}
+.st-close:focus-visible { outline: 2px solid var(--blue-deep); outline-offset: 2px; }
+.st-guide { display: flex; align-items: center; gap: 10px; max-width: 640px; padding: 8px 16px; }
+.st-guide .cat { flex: none; width: 62px; height: auto; animation: bob 2.6s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-4px) rotate(-3deg); } }
+.st-say {
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px 16px 16px 4px;
+  box-shadow: 0 6px 16px rgba(74, 58, 79, 0.12);
+}
+.st-phrase {
+  margin: 4px 0 0;
+  min-height: 2.9em;
+  padding: 0 16px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.15rem, 4.4vw, 1.55rem);
+  line-height: 1.3;
+}
+.st-phrase.swap { animation: swap 0.45s ease; }
+.st-arena { position: relative; flex: 1; min-height: 220px; overflow: hidden; touch-action: none; }
+.st-bottom {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 8px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+.st-msg { margin: 0; max-width: 40ch; font-family: var(--font-display); font-style: italic; font-size: clamp(1.15rem, 4.2vw, 1.4rem); line-height: 1.4; }
+.st-msg:empty { display: none; }
+.st-msg.show { animation: swap 0.5s ease; }
+
+/* Estrella fugaz */
+.sky-dot { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #ffffff; opacity: 0.8; animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle { 50% { opacity: 0.2; } }
+.shoot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 130px;
+  height: 52px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  will-change: transform;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+  transition: opacity 0.6s ease;
+}
+.shoot svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.shoot:focus-visible { outline: 2px solid #ffffff; border-radius: 12px; }
+
+/* Globos */
+.balloon { position: absolute; left: 0; top: 0; width: 58px; padding: 0; background: none; border: 0; cursor: pointer; will-change: transform; }
+.balloon svg { display: block; width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 6px 8px rgba(122, 76, 110, 0.25)); }
+.balloon:focus-visible { outline: 2px solid var(--blue-deep); border-radius: 50%; }
+
+/* Avión */
+.cloud-btn {
+  position: absolute;
+  width: 112px;
+  height: 66px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+.cloud-btn svg { display: block; width: 100%; height: 100%; }
+.cloud-btn span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 10px 12px 0;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--rose-deep);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.cloud-btn.visited span { opacity: 1; }
+.cloud-btn.visited svg { filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.95)); }
+.cloud-btn:focus-visible { outline: 2px solid var(--blue-deep); border-radius: 30px; }
+.plane { position: absolute; left: 0; top: 0; width: 58px; z-index: 3; pointer-events: none; will-change: transform; }
+.plane svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 6px rgba(63, 127, 176, 0.3)); }
+
+/* Corazón del día */
+.big-heart {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(120px, 36vw, 180px);
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 14px 24px rgba(201, 86, 127, 0.35));
+  animation: gbeat 1.4s ease-in-out infinite;
+  transition: opacity 0.4s ease;
+}
+.big-heart svg { display: block; width: 100%; height: auto; }
+.big-heart:focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 6px; border-radius: 50%; }
+.big-heart:disabled { opacity: 0.35; animation: none; cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .day.today, .st-guide .cat, .sky-dot, .big-heart, .st-msg.show, .st-phrase.swap { animation: none !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .welcome .w-heart, .music.playing .disc, .music.playing .eq i { animation: none !important; }

@@ -110,6 +110,7 @@
             <span class="unit"><span class="num" id="m">00</span><span class="lbl">minutos</span></span>
             <span class="unit"><span class="num" id="s">00</span><span class="lbl">segundos</span></span>
           </span>
+          <span class="until" id="until">Hasta las 12:00 a. m. del 14 de octubre</span>
           <span class="tap-hint">
             <svg viewBox="0 0 100 92" fill="currentColor" aria-hidden="true"><use href="#corazon"/></svg>
             <span id="tapText">Tócame, tengo algo para ti</span>
@@ -119,6 +120,16 @@
         <p class="daily" id="dailyBox"><strong>Mensaje de hoy</strong><span id="daily"></span></p>
         </div>
         </div>
+      </div>
+
+      <div class="surprises" id="sorpresas">
+        <header class="section-head">
+          <p class="eyebrow">Una sorpresa por día</p>
+          <h2>Tus 9 sorpresas</h2>
+          <p id="sorpSub"></p>
+          <p class="gold-count" id="goldCount"></p>
+        </header>
+        <div class="days" id="daysGrid"></div>
       </div>
 
       <a class="scroll-cue" href="#recuerdos">
@@ -261,7 +272,7 @@
 <div class="music" id="music">
   <div class="music-panel" id="musicPanel" aria-label="Reproductor de música">
     <p class="mp-label">Sonando para ti</p>
-    <p class="mp-title" id="mpTitle">Morat</p>
+    <p class="mp-title" id="mpTitle">Música para ti</p>
     <div class="mp-video"><div id="ytPlayer"><div class="mp-off">Cargando la música...</div></div></div>
     <div class="mp-controls">
       <button class="mp-btn" id="mpPrev" type="button" aria-label="Canción anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM20 6v12L9.5 12z"/></svg></button>
@@ -285,6 +296,43 @@
         </g>
       </svg>
     </button>
+  </div>
+</div>
+
+<!-- Sorpresa del día -->
+<div class="stage" id="stage" role="dialog" aria-modal="true" aria-labelledby="stTitle" hidden>
+  <div class="st-top">
+    <div>
+      <p class="st-kicker" id="stKicker"></p>
+      <h2 class="st-title" id="stTitle"></h2>
+    </div>
+    <button class="st-close" id="stClose" type="button">Cerrar</button>
+  </div>
+  <div class="st-guide">
+    <svg class="cat" viewBox="0 0 100 92" aria-hidden="true">
+      <path d="M17 44 22 8 47 27Z" fill="#bfe0f7" stroke="#7fb4dc" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M83 44 78 8 53 27Z" fill="#bfe0f7" stroke="#7fb4dc" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M25 34 27 18 39 27Z" fill="#f6b8cc"/>
+      <path d="M75 34 73 18 61 27Z" fill="#f6b8cc"/>
+      <ellipse cx="50" cy="55" rx="40" ry="32" fill="#bfe0f7" stroke="#7fb4dc" stroke-width="2.5"/>
+      <ellipse cx="50" cy="66" rx="20" ry="13" fill="#e6f3fc"/>
+      <ellipse cx="34" cy="52" rx="5" ry="6.5" fill="#4a3a4f"/>
+      <ellipse cx="66" cy="52" rx="5" ry="6.5" fill="#4a3a4f"/>
+      <circle cx="35.8" cy="49.6" r="2" fill="#ffffff"/>
+      <circle cx="67.8" cy="49.6" r="2" fill="#ffffff"/>
+      <circle cx="22" cy="63" r="6" fill="#f6b8cc" opacity="0.75"/>
+      <circle cx="78" cy="63" r="6" fill="#f6b8cc" opacity="0.75"/>
+      <use href="#corazon" x="45" y="58" width="10" height="9.2" fill="#c9567f"/>
+      <path d="M43 70q3.5 4 7 0q3.5 4 7 0" fill="none" stroke="#4a3a4f" stroke-width="2" stroke-linecap="round"/>
+      <use href="#corazon" x="44" y="26" width="12" height="11" fill="#f6b8cc"/>
+    </svg>
+    <p class="st-say" id="stSay"></p>
+  </div>
+  <p class="st-phrase" id="stPhrase" aria-live="polite"></p>
+  <div class="st-arena" id="stArena"></div>
+  <div class="st-bottom">
+    <p class="st-msg" id="stMsg" aria-live="polite"></p>
+    <button class="btn btn-main" id="stDone" type="button" hidden>Guardar mi corazón dorado</button>
   </div>
 </div>
 

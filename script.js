@@ -6,14 +6,67 @@ const CONFIG = {
 
   // Música (YouTube). Para cambiar una canción, copia el código que va después de "watch?v=" en el enlace del video.
   musica: [
-    { id: "pqJBXjzBr_U", titulo: "Yo Más Te Adoro" },
-    { id: "BERCMdeS7uw", titulo: "Cuánto Me Duele" },
-    { id: "UKbhDRxm3Vc", titulo: "Mi Nuevo Vicio (con Paulina Rubio)" },
-    { id: "1oeD2m2UQAI", titulo: "Besos En Guerra (con Juanes)" },
-    { id: "TYrcdhots80", titulo: "A Dónde Vamos" },
-    { id: "_gm5piKnrS4", titulo: "Cómo Te Atreves" }
+    { id: "SWNaC628sd4", artista: "Manuel Lizarazo", titulo: "Ladrona" },
+    { id: "hE8BLXk_5pc", artista: "Morat", titulo: "Mi Suerte" },
+    { id: "ntdwWKaGaPQ", artista: "Jósean Log", titulo: "Beso" },
+    { id: "WqLBq9Maz7c", artista: "Morat", titulo: "Primeras Veces" },
+    { id: "SmF4wY7U7QE", artista: "Leo Rizzi", titulo: "Amapolas" },
+    { id: "QCnXrfd40k0", artista: "Manuel Medrano", titulo: "Una y Otra Vez" },
+    { id: "pqJBXjzBr_U", artista: "Morat", titulo: "Yo Más Te Adoro" },
+    { id: "BERCMdeS7uw", artista: "Morat", titulo: "Cuánto Me Duele" },
+    { id: "UKbhDRxm3Vc", artista: "Paulina Rubio y Morat", titulo: "Mi Nuevo Vicio" },
+    { id: "1oeD2m2UQAI", artista: "Morat y Juanes", titulo: "Besos En Guerra" },
+    { id: "TYrcdhots80", artista: "Morat", titulo: "A Dónde Vamos" },
+    { id: "_gm5piKnrS4", artista: "Morat", titulo: "Cómo Te Atreves" }
   ],
   volumen: 70,
+
+  // Una sorpresa por día. tipo: estrella, globos, avion, tarjeta (corazón con mensaje) o galaxia.
+  sorpresas: [
+    { fecha: "2026-10-06", tipo: "estrella", titulo: "Estrella fugaz",
+      guia: "Hola, soy Pompón. Una estrella fugaz va a cruzar el cielo. ¡Atrápala con un toque!",
+      mensaje: "Pedí un deseo por los dos: celebrar contigo este cumpleaños y muchísimos más. Ahora pide el tuyo." },
+    { fecha: "2026-10-07", tipo: "globos", titulo: "Globos de frases",
+      guia: "Cada globo guarda una frase para ti. ¡Revienta los 8!",
+      frases: [
+        "Me encanta cómo me miras cuando crees que no me doy cuenta.",
+        "Eres mi lugar seguro.",
+        "Tu risa me cambia el día, siempre.",
+        "Contigo hasta lo simple se vuelve especial.",
+        "Gracias por quererme bonito.",
+        "Eres mi persona favorita en el mundo.",
+        "Admiro lo fuerte y lo dulce que eres.",
+        "Cada día te elijo otra vez."
+      ],
+      mensaje: "Ocho frases y todavía me quedan mil. Mañana te espera otra sorpresa." },
+    { fecha: "2026-10-08", tipo: "avion", titulo: "Vuelo del amor",
+      guia: "Guía el avioncito con el dedo y visita las 5 nubes. Cada una es un lugar al que quiero llevarte.",
+      destinos: [
+        { corto: "Un picnic", largo: "un picnic al atardecer, solo tú y yo" },
+        { corto: "El mar", largo: "ver el mar juntos y quedarnos hasta que salgan las estrellas" },
+        { corto: "Un concierto", largo: "un concierto de Morat para cantar a todo pulmón" },
+        { corto: "Una cena", largo: "una cena bonita con velas y sin afán" },
+        { corto: "Un viaje", largo: "un viaje a donde tú quieras, con la maleta llena de planes" }
+      ],
+      mensaje: "Ya tenemos la ruta. Lo que falta es vivirla juntos." },
+    { fecha: "2026-10-09", tipo: "tarjeta", titulo: "Corazón del viernes",
+      guia: "Hoy la sorpresa está guardada en el corazón. Tócalo.",
+      mensaje: "Cinco días para tu cumpleaños, y yo ya cuento las horas para abrazarte." },
+    { fecha: "2026-10-10", tipo: "tarjeta", titulo: "Corazón del sábado",
+      guia: "Toca el corazón para abrir la sorpresa de hoy.",
+      mensaje: "Gracias por ser mi pilar estos meses. No sabes cuánto significas para mí." },
+    { fecha: "2026-10-11", tipo: "tarjeta", titulo: "Corazón del domingo",
+      guia: "Toca el corazón para abrir la sorpresa de hoy.",
+      mensaje: "Tres días. Si pudiera, adelantaría el reloj solo para verte sonreír ese día." },
+    { fecha: "2026-10-12", tipo: "tarjeta", titulo: "Corazón del lunes",
+      guia: "Toca el corazón para abrir la sorpresa de hoy.",
+      mensaje: "Pasado mañana es tu día. Eres lo más bonito que me ha pasado." },
+    { fecha: "2026-10-13", tipo: "tarjeta", titulo: "La víspera",
+      guia: "Último corazón antes de tu cumpleaños. Tócalo.",
+      mensaje: "Mañana es tu día, mi princesa. Duerme bonito, que te espera algo muy especial." },
+    { fecha: "2026-10-14", tipo: "galaxia", titulo: "Tu cumpleaños",
+      guia: "", mensaje: "" }
+  ],
   tituloGalaxia: "Tatiana, eres mi universo",
   palabrasGalaxia: ["Te amo", "Mi princesa", "Mi pilar", "Infinito", "Mi vida", "Mi cielo", "Gracias", "Siempre"],
   mes: 10,
@@ -200,6 +253,9 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const HEART = '<svg viewBox="0 0 100 92"><use href="#corazon" fill="currentColor"/></svg>';
 let offset = 0; // pruebas: offset = new Date("2026-10-14T10:00") - new Date()
 const ahora = () => new Date(Date.now() + offset);
+// Vista previa de un día: agrega #dia1 ... #dia9 al final del enlace
+const mdia = location.hash.match(/^#dia(\d)$/);
+if (mdia && CONFIG.sorpresas[+mdia[1] - 1]) offset = new Date(CONFIG.sorpresas[+mdia[1] - 1].fecha + "T12:00:00") - new Date();
 
 function objetivo(now) {
   const y = now.getFullYear();
@@ -251,6 +307,7 @@ function aplicarModo(hoy) {
   $("heroTitle").textContent = hoy ? "¡Feliz cumpleaños!" : "Falta muy poquito para celebrarte";
   $("tapText").textContent = hoy ? "Abre tu sorpresa de cumpleaños" : "Tócame, tengo algo para ti";
   $("dailyBox").hidden = hoy;
+  $("until").hidden = hoy;
   if (hoy) { lanzarConfeti(); setTimeout(lanzarConfeti, 1600); }
 }
 
@@ -423,6 +480,22 @@ function crearArbol() {
     u.style.animationDelay = (i * 0.008).toFixed(3) + "s";
     canopy.appendChild(u);
   });
+  // Un corazón dorado por cada sorpresa completada
+  dorados = SPOTS.map(([x, y], i) => {
+    const u = document.createElementNS(NS, "use");
+    u.setAttribute("href", "#corazon");
+    u.setAttribute("x", (150 + x * 108 - 14).toFixed(1));
+    u.setAttribute("y", (132 - y * 86 - 13).toFixed(1));
+    u.setAttribute("width", "28");
+    u.setAttribute("height", "26");
+    u.setAttribute("fill", "#f2bd3f");
+    u.setAttribute("stroke", "#ffffff");
+    u.setAttribute("stroke-width", "5");
+    u.setAttribute("class", "leaf gold-heart");
+    u.style.display = "none";
+    canopy.appendChild(u);
+    return u;
+  });
   for (let i = 0; i < 16; i++) {
     const size = 7 + Math.random() * 7;
     const u = document.createElementNS(NS, "use");
@@ -576,7 +649,7 @@ function pintarMusica() {
   $("music").classList.toggle("playing", mus.sonando);
   $("mpPlay").innerHTML = mus.sonando ? PAUSE_ICON : PLAY_ICON;
   $("mpPlay").setAttribute("aria-label", mus.sonando ? "Pausar" : "Reproducir");
-  $("mpTitle").textContent = "Morat · " + CONFIG.musica[mus.i].titulo;
+  $("mpTitle").textContent = CONFIG.musica[mus.i].artista + " · " + CONFIG.musica[mus.i].titulo;
   [...$("mpList").children].forEach((li, k) => li.firstChild.setAttribute("aria-current", k === mus.i ? "true" : "false"));
 }
 function armarLista() {
@@ -584,7 +657,7 @@ function armarLista() {
     const li = document.createElement("li");
     const b = document.createElement("button");
     b.type = "button";
-    b.textContent = (k + 1) + ". " + c.titulo;
+    b.textContent = (k + 1) + ". " + c.titulo + " · " + c.artista;
     b.addEventListener("click", () => cancion(k, true));
     li.appendChild(b);
     $("mpList").appendChild(li);
@@ -662,6 +735,7 @@ $("wEnter").addEventListener("click", () => {
   $("welcome").classList.add("out");
   setTimeout(() => { $("welcome").hidden = true; }, 750);
   $("countdown").focus({ preventScroll: true });
+  setTimeout(entrar, 1100);
 });
 
 /* Si ella pone uno de los videos de Recuerdos, la música se pausa y luego vuelve */
@@ -671,6 +745,328 @@ document.addEventListener("play", (e) => {
 ["pause", "ended"].forEach((ev) => document.addEventListener(ev, (e) => {
   if (e.target.tagName === "VIDEO" && mus.pausadaPorVideo) { mus.pausadaPorVideo = false; tocarMusica(); }
 }, true));
+
+
+/* ---------- Sorpresas diarias ---------- */
+const SPOTS = [[-0.6, 0.5], [0.6, 0.5], [0, 0.78], [-0.92, 0.1], [0.92, 0.1], [-0.38, -0.3], [0.38, -0.3], [0, -0.68], [0, 0.12]];
+const DIAS_CORTOS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+const DIAS_LARGOS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const ICONOS = {
+  hecho: '<svg viewBox="0 0 100 92" aria-hidden="true"><use href="#corazon" fill="#f2bd3f"/></svg>',
+  abierta: '<svg viewBox="-6 -6 112 104" aria-hidden="true"><use href="#corazon" fill="none" stroke="#c9567f" stroke-width="8"/></svg>',
+  bloqueada: '<svg viewBox="0 0 24 24" fill="none" stroke="#86758b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>'
+};
+const vistaPrevia = !!mdia;
+let dorados = [];
+let hechos = new Set();
+try { hechos = new Set(JSON.parse(localStorage.getItem("amormio.hechos") || "[]")); } catch (e) { hechos = new Set(); }
+let diaPintado = "";
+
+function guardarHechos() {
+  if (vistaPrevia) return; // las vistas previas no guardan progreso
+  try { localStorage.setItem("amormio.hechos", JSON.stringify([...hechos])); } catch (e) {}
+}
+function hoyStr() { const n = ahora(); return n.getFullYear() + "-" + pad(n.getMonth() + 1) + "-" + pad(n.getDate()); }
+function fechaDe(f) { return new Date(f + "T12:00:00"); }
+function nombreFecha(f) { const d = fechaDe(f); return DIAS_LARGOS[d.getDay()] + " " + d.getDate() + " de " + MESES[d.getMonth()]; }
+
+function pintarSorpresas() {
+  diaPintado = hoyStr();
+  const lista = CONFIG.sorpresas;
+  const grid = $("daysGrid");
+  grid.textContent = "";
+  lista.forEach((s, i) => {
+    const abierta = s.fecha <= diaPintado;
+    const hecho = hechos.has(i);
+    const esHoyS = s.fecha === diaPintado;
+    const d = fechaDe(s.fecha);
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "day" + (hecho ? " done" : "") + (esHoyS ? " today" : "") + (!abierta ? " locked" : "");
+    b.disabled = !abierta;
+    const estado = hecho ? "Lista" : !abierta ? "Bloqueada" : esHoyS ? "Hoy" : "Pendiente";
+    b.innerHTML = '<span class="d-num"></span><span class="d-date"></span><span class="d-name"></span><span class="d-ico"></span><span class="d-state"></span>';
+    b.querySelector(".d-num").textContent = i + 1;
+    b.querySelector(".d-date").textContent = DIAS_CORTOS[d.getDay()] + " " + d.getDate();
+    b.querySelector(".d-name").textContent = abierta ? s.titulo : "Sorpresa";
+    b.querySelector(".d-ico").innerHTML = hecho ? ICONOS.hecho : abierta ? ICONOS.abierta : ICONOS.bloqueada;
+    b.querySelector(".d-state").textContent = estado;
+    b.setAttribute("aria-label", "Sorpresa " + (i + 1) + ", " + nombreFecha(s.fecha) + ": " + (abierta ? s.titulo + ". " : "") + estado);
+    b.addEventListener("click", () => abrirSorpresa(i));
+    grid.appendChild(b);
+  });
+  const iHoy = lista.findIndex((s) => s.fecha === diaPintado);
+  let sub;
+  if (hechos.size >= lista.length) sub = "Completaste las 9. El árbol quedó lleno de corazones dorados.";
+  else if (iHoy >= 0) sub = hechos.has(iHoy) ? "Ya abriste la de hoy. Mañana llega otra." : "Hoy toca: " + lista[iHoy].titulo + ".";
+  else if (diaPintado < lista[0].fecha) sub = "Empiezan el " + nombreFecha(lista[0].fecha) + ".";
+  else sub = "Puedes abrir las que te falten.";
+  $("sorpSub").textContent = sub + " Cada una que completes le pone un corazón dorado a tu árbol.";
+  $("goldCount").innerHTML = ICONOS.hecho;
+  $("goldCount").append(" " + hechos.size + " de " + lista.length + " corazones dorados");
+}
+function pintarDorados() {
+  dorados.forEach((u, i) => { u.style.display = hechos.has(i) ? "" : "none"; });
+}
+function marcarHecho(i) {
+  if (hechos.has(i)) return;
+  hechos.add(i);
+  guardarHechos();
+  pintarSorpresas();
+  pintarDorados();
+}
+
+/* Escenario */
+const escena_ = { i: -1, limpiar: null };
+function abrirSorpresa(i) {
+  const s = CONFIG.sorpresas[i];
+  if (!s || s.fecha > hoyStr()) return;
+  if (s.tipo === "galaxia") { marcarHecho(i); abrirGalaxia(); return; }
+  escena_.i = i;
+  const st = $("stage");
+  st.dataset.tipo = s.tipo;
+  st.hidden = false;
+  document.body.style.overflow = "hidden";
+  $("stKicker").textContent = "Sorpresa " + (i + 1) + " de " + CONFIG.sorpresas.length + " · " + nombreFecha(s.fecha);
+  $("stTitle").textContent = s.titulo;
+  $("stSay").textContent = s.guia || "";
+  $("stPhrase").textContent = "";
+  $("stMsg").textContent = "";
+  $("stDone").hidden = true;
+  $("stDone").textContent = hechos.has(i) ? "Volver a la página" : "Guardar mi corazón dorado";
+  const arena = $("stArena");
+  arena.textContent = "";
+  requestAnimationFrame(() => {
+    const juego = JUEGOS[s.tipo] || JUEGOS.tarjeta;
+    escena_.limpiar = juego(arena, s, i) || null;
+  });
+  $("stClose").focus();
+}
+function cerrarSorpresa() {
+  if (escena_.limpiar) escena_.limpiar();
+  escena_.limpiar = null;
+  $("stage").hidden = true;
+  $("stArena").textContent = "";
+  document.body.style.overflow = "";
+}
+function frase(t) {
+  const el = $("stPhrase");
+  el.textContent = t;
+  el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap");
+}
+function terminar(texto) {
+  const m = $("stMsg");
+  m.textContent = texto;
+  m.classList.remove("show"); void m.offsetWidth; m.classList.add("show");
+  $("stDone").hidden = false;
+  $("stDone").focus();
+  if (!reduce) lanzarConfeti();
+}
+function centroDe(el) { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+$("stClose").addEventListener("click", cerrarSorpresa);
+$("stDone").addEventListener("click", () => { marcarHecho(escena_.i); cerrarSorpresa(); });
+addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("stage").hidden) cerrarSorpresa(); });
+
+/* Al entrar: abre sola la sorpresa del día si todavía no la ha visto */
+function entrar() {
+  const i = CONFIG.sorpresas.findIndex((s) => s.fecha === hoyStr());
+  if (i < 0 || hechos.has(i)) return;
+  abrirSorpresa(i);
+}
+setInterval(() => { if (hoyStr() !== diaPintado) pintarSorpresas(); }, 30000);
+
+const JUEGOS = {};
+
+/* Día 1: estrella fugaz */
+JUEGOS.estrella = (arena, s) => {
+  for (let k = 0; k < 46; k++) {
+    const d = document.createElement("span");
+    d.className = "sky-dot";
+    d.style.left = Math.random() * 100 + "%";
+    d.style.top = Math.random() * 100 + "%";
+    d.style.animationDelay = Math.random() * 3 + "s";
+    arena.appendChild(d);
+  }
+  const est = document.createElement("button");
+  est.type = "button";
+  est.className = "shoot";
+  est.setAttribute("aria-label", "Atrapar la estrella fugaz");
+  est.innerHTML = '<svg viewBox="0 0 120 40" aria-hidden="true"><defs><linearGradient id="gEstela" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.95"/></linearGradient></defs><path d="M0 20 L92 15.5 L92 24.5 Z" fill="url(#gEstela)"/><polygon points="100,6 103.3,15.5 113.3,15.7 105.3,21.7 108.2,31.3 100,25.6 91.8,31.3 94.7,21.7 86.7,15.7 96.7,15.5" fill="#fff1b8" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  arena.appendChild(est);
+  let raf = 0, atrapada = false, ciclo = -1, y0 = 0;
+  const t0 = performance.now(), dur = 3600, pausa = 900;
+  function paso(now) {
+    if (atrapada) return;
+    const w = arena.clientWidth, h = arena.clientHeight;
+    const c = Math.floor((now - t0) / (dur + pausa));
+    if (c !== ciclo) { ciclo = c; y0 = h * (0.08 + Math.random() * 0.4); }
+    const p = ((now - t0) % (dur + pausa)) / dur;
+    if (p > 1) { est.style.visibility = "hidden"; }
+    else {
+      est.style.visibility = "visible";
+      const x = -160 + p * (w + 320);
+      const y = y0 + p * Math.min(w * 0.35, h * 0.45);
+      est.style.transform = "translate(" + x.toFixed(1) + "px," + y.toFixed(1) + "px) rotate(14deg)";
+    }
+    raf = requestAnimationFrame(paso);
+  }
+  if (reduce) est.style.transform = "translate(" + (arena.clientWidth / 2 - 65) + "px," + (arena.clientHeight * 0.3) + "px) rotate(14deg)";
+  else raf = requestAnimationFrame(paso);
+  est.addEventListener("click", () => {
+    if (atrapada) return;
+    atrapada = true;
+    cancelAnimationFrame(raf);
+    const [x, y] = centroDe(est);
+    explotar(x, y);
+    est.disabled = true;
+    est.style.opacity = "0";
+    $("stSay").textContent = "¡La atrapaste! Cierra los ojos y pide un deseo.";
+    frase("Ya pasó una estrella, mi princesa.");
+    terminar(s.mensaje);
+  });
+  return () => cancelAnimationFrame(raf);
+};
+
+/* Día 2: globos de frases */
+JUEGOS.globos = (arena, s) => {
+  const n = s.frases.length;
+  const lugares = s.frases.map((_, k) => k).sort(() => Math.random() - 0.5);
+  let vivos = n, raf = 0, ult = performance.now();
+  const w0 = arena.clientWidth, h0 = arena.clientHeight;
+  const gl = s.frases.map((f, k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "balloon";
+    b.setAttribute("aria-label", "Reventar globo " + (k + 1));
+    b.innerHTML = '<svg viewBox="0 0 60 130" aria-hidden="true"><use href="#globo" fill="url(#' + (k % 2 ? "gGloboAzul" : "gGloboRosa") + ')"/></svg>';
+    const o = {
+      el: b, f, vivo: true,
+      x: 6 + (lugares[k] / Math.max(1, n - 1)) * Math.max(40, w0 - 70),
+      y: reduce ? 20 + (k % 2) * 140 : h0 * 0.15 + (k / n) * h0 * 1.15,
+      v: 36 + Math.random() * 30,
+      fase: Math.random() * 6
+    };
+    b.addEventListener("click", () => reventar(o));
+    arena.appendChild(b);
+    return o;
+  });
+  function pintar(t) {
+    gl.forEach((o) => {
+      if (!o.vivo) return;
+      const dx = reduce ? 0 : Math.sin(t * 1.3 + o.fase) * 12;
+      o.el.style.transform = "translate(" + (o.x + dx).toFixed(1) + "px," + o.y.toFixed(1) + "px)";
+    });
+  }
+  function paso(now) {
+    const dt = Math.min(0.05, (now - ult) / 1000);
+    ult = now;
+    const h = arena.clientHeight;
+    gl.forEach((o) => {
+      if (!o.vivo) return;
+      o.y -= o.v * dt;
+      if (o.y < -150) o.y = h + 20;
+    });
+    pintar(now / 1000);
+    raf = requestAnimationFrame(paso);
+  }
+  function reventar(o) {
+    if (!o.vivo) return;
+    o.vivo = false;
+    const [x, y] = centroDe(o.el);
+    explotar(x, y - 20);
+    o.el.remove();
+    vivos--;
+    frase(o.f);
+    $("stSay").textContent = vivos ? "¡Bien! Quedan " + vivos + (vivos === 1 ? " globo." : " globos.") : "¡Los reventaste todos!";
+    if (!vivos) { cancelAnimationFrame(raf); terminar(s.mensaje); }
+  }
+  pintar(0);
+  if (!reduce) raf = requestAnimationFrame(paso);
+  return () => cancelAnimationFrame(raf);
+};
+
+/* Día 3: vuelo del amor */
+JUEGOS.avion = (arena, s) => {
+  const pos = [[20, 22], [78, 18], [48, 48], [22, 76], [78, 72]];
+  let vistos = 0, raf = 0;
+  const nubes = s.destinos.map((d, k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "cloud-btn";
+    b.style.left = pos[k % pos.length][0] + "%";
+    b.style.top = pos[k % pos.length][1] + "%";
+    b.setAttribute("aria-label", "Volar a la nube " + (k + 1));
+    b.innerHTML = '<svg viewBox="0 0 200 100" aria-hidden="true"><use href="#nube" fill="url(#gNubeAzul)"/></svg><span></span>';
+    b.querySelector("span").textContent = d.corto;
+    b.addEventListener("click", () => { meta[0] = pos[k % pos.length][0] / 100 * arena.clientWidth; meta[1] = pos[k % pos.length][1] / 100 * arena.clientHeight; });
+    arena.appendChild(b);
+    return { el: b, d, k, visto: false };
+  });
+  const av = document.createElement("div");
+  av.className = "plane";
+  av.innerHTML = '<svg viewBox="0 0 64 44" aria-hidden="true"><path d="M60 22 L6 5 L20 22 L6 39 Z" fill="#ffffff" stroke="#3f7fb0" stroke-width="2.4" stroke-linejoin="round"/><path d="M60 22 L20 22 L13 30" fill="none" stroke="#8ec3ea" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  arena.appendChild(av);
+  const p = [arena.clientWidth * 0.5, arena.clientHeight * 0.9];
+  const meta = [p[0], p[1] - 40];
+  let ang = -Math.PI / 2;
+  function mover(e) {
+    const r = arena.getBoundingClientRect();
+    meta[0] = e.clientX - r.left;
+    meta[1] = e.clientY - r.top;
+  }
+  arena.addEventListener("pointerdown", mover);
+  arena.addEventListener("pointermove", mover);
+  function visitar(n) {
+    n.visto = true;
+    n.el.classList.add("visited");
+    vistos++;
+    const [x, y] = centroDe(n.el);
+    explotar(x, y);
+    frase("Quiero llevarte a " + n.d.largo + ".");
+    $("stSay").textContent = vistos < nubes.length ? "¡Llegaste! Te faltan " + (nubes.length - vistos) + "." : "¡Visitaste todas las nubes!";
+    if (vistos === nubes.length) terminar(s.mensaje);
+  }
+  function paso() {
+    const w = arena.clientWidth, h = arena.clientHeight;
+    const k = reduce ? 1 : 0.08;
+    const dx = meta[0] - p[0], dy = meta[1] - p[1];
+    p[0] += dx * k; p[1] += dy * k;
+    if (Math.hypot(dx, dy) > 4) {
+      const objetivoAng = Math.atan2(dy, dx);
+      let dif = objetivoAng - ang;
+      while (dif > Math.PI) dif -= Math.PI * 2;
+      while (dif < -Math.PI) dif += Math.PI * 2;
+      ang += dif * (reduce ? 1 : 0.15);
+    }
+    av.style.transform = "translate(" + (p[0] - 29).toFixed(1) + "px," + (p[1] - 20).toFixed(1) + "px) rotate(" + ang.toFixed(3) + "rad)";
+    nubes.forEach((n) => {
+      if (n.visto) return;
+      const cx = pos[n.k % pos.length][0] / 100 * w, cy = pos[n.k % pos.length][1] / 100 * h;
+      if (Math.hypot(p[0] - cx, p[1] - cy) < 50) visitar(n);
+    });
+    raf = requestAnimationFrame(paso);
+  }
+  raf = requestAnimationFrame(paso);
+  return () => cancelAnimationFrame(raf);
+};
+
+/* Corazón con mensaje (días sin juego todavía) */
+JUEGOS.tarjeta = (arena, s) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "big-heart";
+  b.setAttribute("aria-label", "Abrir la sorpresa de hoy");
+  b.innerHTML = '<svg viewBox="0 0 100 92" aria-hidden="true"><use href="#corazon" fill="url(#gCorazon)"/></svg>';
+  b.addEventListener("click", () => {
+    const [x, y] = centroDe(b);
+    explotar(x, y);
+    b.disabled = true;
+    frase("Para ti, mi princesa.");
+    terminar(s.mensaje);
+  });
+  arena.appendChild(b);
+};
 
 /* ---------- Motor 3D del scroll ---------- */
 const capas = [...document.querySelectorAll(".px")];
@@ -754,6 +1150,8 @@ crearArbol();
 prepararGalaxia();
 armarLista();
 cargarYouTube();
+pintarSorpresas();
+pintarDorados();
 cargarRecuerdos();
 revisarCarta();
 setInterval(revisarCarta, 1000);
@@ -771,4 +1169,5 @@ if (!reduce) {
 if (verCarta) setTimeout(() => $("carta").scrollIntoView(), 300);
 // Vista previa de la sorpresa: abre la página con #galaxia al final del enlace
 if (location.hash === "#galaxia") abrirGalaxia();
-if (location.hash === "#galaxia" || verCarta) $("welcome").hidden = true;
+if (location.hash === "#galaxia" || verCarta || mdia) $("welcome").hidden = true;
+if (mdia) setTimeout(entrar, 700);
