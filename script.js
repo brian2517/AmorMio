@@ -49,20 +49,27 @@ const CONFIG = {
         { corto: "Un viaje", largo: "un viaje a donde tú quieras, con la maleta llena de planes" }
       ],
       mensaje: "Ya tenemos la ruta. Lo que falta es vivirla juntos." },
-    { fecha: "2026-10-09", tipo: "tarjeta", titulo: "Corazón del viernes",
-      guia: "Hoy la sorpresa está guardada en el corazón. Tócalo.",
-      mensaje: "Cinco días para tu cumpleaños, y yo ya cuento las horas para abrazarte." },
-    { fecha: "2026-10-10", tipo: "tarjeta", titulo: "Corazón del sábado",
-      guia: "Toca el corazón para abrir la sorpresa de hoy.",
-      mensaje: "Gracias por ser mi pilar estos meses. No sabes cuánto significas para mí." },
-    { fecha: "2026-10-11", tipo: "tarjeta", titulo: "Corazón del domingo",
-      guia: "Toca el corazón para abrir la sorpresa de hoy.",
-      mensaje: "Tres días. Si pudiera, adelantaría el reloj solo para verte sonreír ese día." },
-    { fecha: "2026-10-12", tipo: "tarjeta", titulo: "Corazón del lunes",
-      guia: "Toca el corazón para abrir la sorpresa de hoy.",
-      mensaje: "Pasado mañana es tu día. Eres lo más bonito que me ha pasado." },
-    { fecha: "2026-10-13", tipo: "tarjeta", titulo: "La víspera",
-      guia: "Último corazón antes de tu cumpleaños. Tócalo.",
+    { fecha: "2026-10-09", tipo: "puzzle", titulo: "Rompecabezas",
+      guia: "Arma tu foto: toca una pieza y luego otra para cambiarlas de lugar.",
+      foto: "Esa mirada que me desarma",
+      mensaje: "Así como esta foto, contigo todo encaja. Faltan 5 días." },
+    { fecha: "2026-10-10", tipo: "memoria", titulo: "Memoria de parejas",
+      guia: "Encuentra los 6 pares. Toca dos cartas para voltearlas.",
+      mensaje: "Encontraste todos los pares... y yo encontré el mío en ti." },
+    { fecha: "2026-10-11", tipo: "rasca", titulo: "Rasca y descubre",
+      guia: "Raspa la tarjeta con el dedo para ver qué hay escondido.",
+      premio: { titulo: "Vale por", texto: "Una cita sorpresa planeada por mí, el día que tú elijas." },
+      mensaje: "Guárdalo bien: lo puedes cobrar cuando quieras." },
+    { fecha: "2026-10-12", tipo: "sobres", titulo: "Ábrelo cuando…",
+      guia: "Tres sobres para tres momentos. Abre el que necesites hoy; los otros quedan guardados aquí.",
+      cartas: [
+        { para: "estés triste", texto: "Si hoy estás triste, quiero que sepas que no estás sola. Respira, abrázate fuerte y piensa que yo estoy pensando en ti. Todo pasa, y yo me quedo. Eres más fuerte de lo que crees, y te amo también en tus días grises." },
+        { para: "me extrañes", texto: "Si me extrañas, cierra los ojos y acuérdate de nuestro último abrazo. Seguro yo también te estoy extrañando. Escríbeme, llámame o pon una canción de Morat: ahí estoy yo, cantándote al oído." },
+        { para: "necesites una sonrisa", texto: "Dato comprobado por mí: cada vez que sonríes, el mundo se pone más bonito. Ahora imagina que te estoy haciendo cosquillas... ¿ya sonreíste? Misión cumplida, mi princesa." }
+      ],
+      mensaje: "Estos sobres siempre van a estar aquí para cuando los necesites." },
+    { fecha: "2026-10-13", tipo: "constelacion", titulo: "Constelación",
+      guia: "Toca las estrellas en orden (o pasa el dedo por ellas) para dibujar una constelación.",
       mensaje: "Mañana es tu día, mi princesa. Duerme bonito, que te espera algo muy especial." },
     { fecha: "2026-10-14", tipo: "galaxia", titulo: "Tu cumpleaños",
       guia: "", mensaje: "" }
@@ -1051,7 +1058,293 @@ JUEGOS.avion = (arena, s) => {
   return () => cancelAnimationFrame(raf);
 };
 
-/* Corazón con mensaje (días sin juego todavía) */
+
+function fotoPorTexto(t) {
+  for (const c of CONFIG.historia) for (const f of c.fotos) if (f.texto === t) return f.src;
+  return CONFIG.historia[CONFIG.historia.length - 1].fotos[0].src;
+}
+function centro(arena) {
+  const c = document.createElement("div");
+  c.className = "game-center";
+  arena.appendChild(c);
+  return c;
+}
+
+/* Día 4: rompecabezas */
+JUEGOS.puzzle = (arena, s) => {
+  const src = fotoPorTexto(s.foto);
+  const w = arena.clientWidth, h = arena.clientHeight;
+  const size = Math.round(Math.max(200, Math.min(w - 32, h - 80, 380)));
+  const c = centro(arena);
+  const ref = document.createElement("div");
+  ref.className = "puzzle-ref-wrap";
+  ref.innerHTML = '<img class="puzzle-ref" alt=""><span>Así debe quedar</span>';
+  ref.querySelector("img").src = src;
+  const tablero = document.createElement("div");
+  tablero.className = "puzzle";
+  tablero.style.width = tablero.style.height = size + "px";
+  let orden = [...Array(9).keys()];
+  do { orden.sort(() => Math.random() - 0.5); } while (orden.filter((v, k) => v === k).length > 2);
+  let sel = -1, listo = false;
+  const piezas = [];
+  for (let k = 0; k < 9; k++) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "tile";
+    b.style.backgroundImage = 'url("' + src + '")';
+    b.addEventListener("click", () => tocar(k));
+    tablero.appendChild(b);
+    piezas.push(b);
+  }
+  function pintar() {
+    piezas.forEach((b, k) => {
+      const v = orden[k];
+      b.style.backgroundPosition = (v % 3) * 50 + "% " + Math.floor(v / 3) * 50 + "%";
+      b.classList.toggle("sel", k === sel);
+      b.setAttribute("aria-label", "Pieza " + (k + 1) + (v === k ? ", en su lugar" : ""));
+    });
+  }
+  function tocar(k) {
+    if (listo) return;
+    if (sel < 0) { sel = k; pintar(); return; }
+    if (sel !== k) [orden[sel], orden[k]] = [orden[k], orden[sel]];
+    sel = -1;
+    pintar();
+    const bien = orden.filter((v, i) => v === i).length;
+    $("stSay").textContent = bien === 9 ? "¡Lo armaste!" : bien + " de 9 piezas en su lugar. Sigue así.";
+    if (bien === 9) {
+      listo = true;
+      tablero.classList.add("solved");
+      const [x, y] = centroDe(tablero);
+      explotar(x, y);
+      frase("Todo encaja contigo.");
+      terminar(s.mensaje);
+    }
+  }
+  c.append(ref, tablero);
+  pintar();
+};
+
+/* Día 5: memoria de parejas */
+JUEGOS.memoria = (arena, s) => {
+  const base = CONFIG.historia[CONFIG.historia.length - 1].fotos.slice(0, 6);
+  const mazo = base.concat(base).map((f, k) => ({ f, id: k % base.length })).sort(() => Math.random() - 0.5);
+  const w = arena.clientWidth, h = arena.clientHeight;
+  const cols = w >= 560 ? 4 : 3, filas = Math.ceil(mazo.length / cols), gap = 8;
+  const cw = Math.floor(Math.max(60, Math.min((w - 24 - gap * (cols - 1)) / cols, (h - 16 - gap * (filas - 1)) / filas / 1.25, 130)));
+  const c = centro(arena);
+  const grid = document.createElement("div");
+  grid.className = "mgrid";
+  grid.style.gridTemplateColumns = "repeat(" + cols + ", " + cw + "px)";
+  let abiertas = [], pares = 0, bloqueo = false;
+  mazo.forEach((m, k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mcard";
+    b.style.width = cw + "px";
+    b.style.height = Math.round(cw * 1.25) + "px";
+    b.setAttribute("aria-label", "Carta " + (k + 1));
+    b.innerHTML = '<span class="mc-in"><span class="mc-face mc-back"><svg viewBox="0 0 100 92" aria-hidden="true"><use href="#corazon" fill="#ffffff"/></svg></span><span class="mc-face mc-front"><img alt=""></span></span>';
+    b.querySelector("img").src = m.f.src;
+    m.el = b;
+    b.addEventListener("click", () => voltear(m));
+    grid.appendChild(b);
+  });
+  function voltear(m) {
+    if (bloqueo || m.el.classList.contains("flip")) return;
+    m.el.classList.add("flip");
+    m.el.setAttribute("aria-label", m.f.texto);
+    abiertas.push(m);
+    if (abiertas.length < 2) return;
+    const [a, b] = abiertas;
+    abiertas = [];
+    if (a.id === b.id) {
+      pares++;
+      a.el.classList.add("match"); b.el.classList.add("match");
+      const [x, y] = centroDe(b.el);
+      explotar(x, y);
+      frase(a.f.texto);
+      $("stSay").textContent = pares < base.length ? "¡Pareja encontrada! Van " + pares + " de " + base.length + "." : "¡Las encontraste todas!";
+      if (pares === base.length) terminar(s.mensaje);
+    } else {
+      bloqueo = true;
+      setTimeout(() => {
+        a.el.classList.remove("flip"); b.el.classList.remove("flip");
+        a.el.setAttribute("aria-label", "Carta"); b.el.setAttribute("aria-label", "Carta");
+        bloqueo = false;
+      }, 850);
+    }
+  }
+  c.appendChild(grid);
+};
+
+/* Día 6: rasca y descubre */
+JUEGOS.rasca = (arena, s) => {
+  const w = arena.clientWidth, h = arena.clientHeight;
+  const cw = Math.round(Math.min(w - 32, 360)), ch = Math.round(Math.max(170, Math.min(230, h - 24)));
+  const c = centro(arena);
+  const box = document.createElement("div");
+  box.className = "scratch";
+  box.style.width = cw + "px";
+  box.style.height = ch + "px";
+  box.innerHTML = '<div class="prize"><p class="prize-k"></p><p class="prize-t"></p></div><canvas aria-label="Tarjeta para raspar" role="img"></canvas>';
+  box.querySelector(".prize-k").textContent = s.premio.titulo;
+  box.querySelector(".prize-t").textContent = s.premio.texto;
+  c.appendChild(box);
+  const cv = box.querySelector("canvas");
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  cv.width = cw * dpr; cv.height = ch * dpr;
+  const g = cv.getContext("2d");
+  g.scale(dpr, dpr);
+  const grad = g.createLinearGradient(0, 0, cw, ch);
+  grad.addColorStop(0, "#f6b8cc"); grad.addColorStop(1, "#a9d2f2");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, cw, ch);
+  g.fillStyle = "rgba(255,255,255,0.35)";
+  for (let k = 0; k < 40; k++) { g.beginPath(); g.arc(Math.random() * cw, Math.random() * ch, 2 + Math.random() * 3, 0, Math.PI * 2); g.fill(); }
+  g.fillStyle = "#ffffff";
+  g.font = "700 20px Quicksand, system-ui, sans-serif";
+  g.textAlign = "center"; g.textBaseline = "middle";
+  g.fillText("Raspa aquí", cw / 2, ch / 2);
+  g.globalCompositeOperation = "destination-out";
+  g.lineWidth = 38; g.lineCap = "round"; g.lineJoin = "round";
+  let rascando = false, ult = null, n = 0, listo = false;
+  function punto(e) { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+  function raspar(e) {
+    const p = punto(e);
+    g.beginPath();
+    if (ult) { g.moveTo(ult[0], ult[1]); g.lineTo(p[0], p[1]); g.stroke(); }
+    else { g.arc(p[0], p[1], 19, 0, Math.PI * 2); g.fill(); }
+    ult = p;
+    if (++n % 10 === 0) revisar();
+  }
+  function revisar() {
+    if (listo) return;
+    const d = g.getImageData(0, 0, cv.width, cv.height).data;
+    let vacio = 0, total = 0;
+    for (let k = 3; k < d.length; k += 4 * 16) { total++; if (d[k] < 40) vacio++; }
+    if (vacio / total > 0.5) {
+      listo = true;
+      cv.style.opacity = "0";
+      setTimeout(() => cv.remove(), 700);
+      const [x, y] = centroDe(box);
+      explotar(x, y);
+      frase("¡Premio para ti!");
+      $("stSay").textContent = "¡Lo descubriste!";
+      terminar(s.mensaje);
+    }
+  }
+  cv.addEventListener("pointerdown", (e) => { rascando = true; ult = null; cv.setPointerCapture(e.pointerId); raspar(e); });
+  cv.addEventListener("pointermove", (e) => { if (rascando) raspar(e); });
+  ["pointerup", "pointercancel"].forEach((ev) => cv.addEventListener(ev, () => { rascando = false; ult = null; revisar(); }));
+};
+
+/* Día 7: ábrelo cuando... */
+JUEGOS.sobres = (arena, s) => {
+  const c = centro(arena);
+  const lista = document.createElement("div");
+  lista.className = "envs";
+  let abierto = false;
+  const SOBRE = '<svg viewBox="0 0 240 160" aria-hidden="true"><rect width="240" height="160" rx="16" fill="#f6b8cc"/><path d="M0 14 112 92 0 160Z" fill="#bfe0f7"/><path d="M240 14 128 92 240 160Z" fill="#a9d2f2"/><path d="M0 160 120 80 240 160Z" fill="#fde3ec"/><path d="M8 2h224L120 96Z" fill="#f08fb1"/><use href="#corazon" x="106" y="56" width="28" height="26" fill="#ffffff"/></svg>';
+  s.cartas.forEach((carta) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "env";
+    b.innerHTML = SOBRE + '<span><small>Ábrelo cuando</small><strong></strong></span>';
+    b.querySelector("strong").textContent = "…" + carta.para;
+    b.addEventListener("click", () => leer(carta, b));
+    lista.appendChild(b);
+  });
+  c.appendChild(lista);
+  function leer(carta, b) {
+    b.classList.add("read");
+    const card = document.createElement("div");
+    card.className = "read-card";
+    card.innerHTML = '<p class="read-to"></p><p class="read-text"></p><button class="btn btn-main" type="button">Guardar carta</button>';
+    card.querySelector(".read-to").textContent = "Para cuando " + carta.para;
+    card.querySelector(".read-text").textContent = carta.texto;
+    card.querySelector("button").addEventListener("click", () => {
+      card.remove();
+      b.focus();
+      if (!abierto) { abierto = true; $("stSay").textContent = "Los otros sobres quedan aquí para cuando los necesites."; terminar(s.mensaje); }
+    });
+    arena.appendChild(card);
+    card.querySelector("button").focus();
+  }
+};
+
+/* Día 8: constelación */
+JUEGOS.constelacion = (arena, s) => {
+  for (let k = 0; k < 50; k++) {
+    const d = document.createElement("span");
+    d.className = "sky-dot";
+    d.style.left = Math.random() * 100 + "%";
+    d.style.top = Math.random() * 100 + "%";
+    d.style.animationDelay = Math.random() * 3 + "s";
+    arena.appendChild(d);
+  }
+  const w = arena.clientWidth, h = arena.clientHeight, N = 12;
+  const R = Math.min(w * 0.44, h * 0.44) / 16;
+  const cx = w / 2, cy = h / 2 + R;
+  const pts = [];
+  for (let k = 0; k < N; k++) {
+    const t = (Math.PI * 2 * k) / N;
+    pts.push([cx + 16 * Math.pow(Math.sin(t), 3) * R, cy - (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * R]);
+  }
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "cline");
+  svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+  const pl = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+  svg.appendChild(pl);
+  arena.appendChild(svg);
+  let sig = 0, arrastrando = false;
+  const trazo = [];
+  const estrellas = pts.map(([x, y], k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "cstar" + (k === 0 ? " next" : "");
+    b.style.left = x + "px";
+    b.style.top = y + "px";
+    b.setAttribute("aria-label", "Estrella " + (k + 1));
+    b.innerHTML = "<i></i><b>" + (k + 1) + "</b>";
+    b.addEventListener("click", () => tocar(k));
+    arena.appendChild(b);
+    return b;
+  });
+  function tocar(k) {
+    if (sig >= N) return;
+    if (k !== sig) {
+      if (k > sig) { const e = estrellas[sig]; e.classList.remove("shake"); void e.offsetWidth; e.classList.add("shake"); }
+      return;
+    }
+    estrellas[k].classList.remove("next");
+    estrellas[k].classList.add("lit");
+    trazo.push(pts[k][0].toFixed(1) + "," + pts[k][1].toFixed(1));
+    sig++;
+    if (sig < N) {
+      estrellas[sig].classList.add("next");
+      $("stSay").textContent = "¡Bien! Sigue con la estrella " + (sig + 1) + ".";
+    } else {
+      trazo.push(trazo[0]);
+      svg.classList.add("done");
+      const r = arena.getBoundingClientRect();
+      explotar(r.left + cx, r.top + cy);
+      $("stSay").textContent = "¡Dibujaste un corazón en el cielo!";
+      frase("Este cielo es para ti.");
+      terminar(s.mensaje);
+    }
+    pl.setAttribute("points", trazo.join(" "));
+  }
+  arena.addEventListener("pointerdown", () => { arrastrando = true; });
+  ["pointerup", "pointercancel", "pointerleave"].forEach((ev) => arena.addEventListener(ev, () => { arrastrando = false; }));
+  arena.addEventListener("pointermove", (e) => {
+    if (!arrastrando || sig >= N) return;
+    const r = arena.getBoundingClientRect();
+    if (Math.hypot(e.clientX - r.left - pts[sig][0], e.clientY - r.top - pts[sig][1]) < 26) tocar(sig);
+  });
+};
+
+/* Corazón con mensaje */
 JUEGOS.tarjeta = (arena, s) => {
   const b = document.createElement("button");
   b.type = "button";
