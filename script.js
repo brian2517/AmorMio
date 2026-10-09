@@ -650,6 +650,17 @@ $("gClose").addEventListener("click", cerrarGalaxia);
 /* ---------- Música (YouTube) ---------- */
 const PLAY_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>';
 const PAUSE_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+// Orden aleatorio en cada visita, sin repetir la canción con la que empezó la vez anterior
+(function mezclarMusica() {
+  const m = CONFIG.musica;
+  let ultima = "";
+  try { ultima = localStorage.getItem("amormio.ultimaCancion") || ""; } catch (e) {}
+  for (let intento = 0; intento < 5; intento++) {
+    for (let i = m.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [m[i], m[j]] = [m[j], m[i]]; }
+    if (m[0].id !== ultima || m.length < 2) break;
+  }
+  try { localStorage.setItem("amormio.ultimaCancion", m[0].id); } catch (e) {}
+})();
 const mus = { player: null, listo: false, quiere: false, i: 0, sonando: false, fallos: 0, pausadaPorVideo: false };
 
 function pintarMusica() {
