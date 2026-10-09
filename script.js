@@ -6,6 +6,7 @@ const CONFIG = {
 
   // Música (YouTube). Para cambiar una canción, copia el código que va después de "watch?v=" en el enlace del video.
   musica: [
+    { id: "j31L0iIwdmE", artista: "Morat", titulo: "Me Mata", primeraEl: "2026-10-10" },
     { id: "SWNaC628sd4", artista: "Manuel Lizarazo", titulo: "Ladrona" },
     { id: "hE8BLXk_5pc", artista: "Morat", titulo: "Mi Suerte" },
     { id: "ntdwWKaGaPQ", artista: "Jósean Log", titulo: "Beso" },
@@ -659,6 +660,10 @@ const PAUSE_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tr
     for (let i = m.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [m[i], m[j]] = [m[j], m[i]]; }
     if (m[0].id !== ultima || m.length < 2) break;
   }
+  // Si una canción tiene "primeraEl" con la fecha de hoy, esa suena de primera ese día
+  const hoy = hoyStr();
+  const k = m.findIndex((c) => c.primeraEl === hoy);
+  if (k > 0) m.unshift(m.splice(k, 1)[0]);
   try { localStorage.setItem("amormio.ultimaCancion", m[0].id); } catch (e) {}
 })();
 const mus = { player: null, listo: false, quiere: false, i: 0, sonando: false, fallos: 0, pausadaPorVideo: false };
