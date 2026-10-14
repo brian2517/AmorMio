@@ -6,7 +6,7 @@ const CONFIG = {
 
   // Música (YouTube). Para cambiar una canción, copia el código que va después de "watch?v=" en el enlace del video.
   musica: [
-    { id: "GsE6eMr3VOc", respaldo: "ZKxemVEOkpk", artista: "Vicente Fernández", titulo: "Las Mañanitas", primeraEl: "2026-10-14" },
+    { id: "ZKxemVEOkpk", respaldo: "xLUTU4OxKqs", artista: "Vicente Fernández", titulo: "Las Mañanitas", primeraEl: "2026-10-14" },
     { id: "j31L0iIwdmE", artista: "Morat", titulo: "Me Mata", primeraEl: "2026-10-10" },
     { id: "SWNaC628sd4", artista: "Manuel Lizarazo", titulo: "Ladrona" },
     { id: "hE8BLXk_5pc", artista: "Morat", titulo: "Mi Suerte" },
